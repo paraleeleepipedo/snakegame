@@ -1,6 +1,6 @@
-  byte latchPin = 5;  // 12 shift register 74hc595
-  byte clockPin = 4;  // 11
-  byte dataPin  = 2;  // 14
+  byte latchPin = 5;  //al pin 12 del shift register 74hc595
+  byte clockPin = 4;  //al pin 11
+  byte dataPin  = 2;  //al pin 14
   byte posicion [64][2]; // poscion de cada elemento de la serpiente
   byte alimento [2]; //ubicacion del alimento
   byte direccion; // direccion en la que se mueve la serpiente
@@ -20,8 +20,8 @@ void setup()
   pinMode(dataPin, OUTPUT);  // datos, se arrojan en cascada
 
   randomSeed( analogRead(A2)); //se elije una semilla leyendo una entrada al aire, los valores leidos son aleatorios
-  alimento[0] = random(0,7);
-  alimento[1] = random(0,7);
+  alimento[0] = random(0,8);
+  alimento[1] = random(0,8);
   
   direccion = 0; // movimiento inicial a la derecha(?)
   posicion[0][0] = 0;
@@ -165,8 +165,8 @@ void comer() // Si la cabeza esta en la posicion del alimento entonces lo consum
     {
       cambioPosicion();
       crecer();
-      alimento[0]=random(0,7);
-      alimento[1]=random(0,7);
+      alimento[0]=random(0,8);
+      alimento[1]=random(0,8);
     }
   }
 }
@@ -189,28 +189,11 @@ void meMordi() // Revisa cuando la serpiente se muerde a si misma, si es el caso
       }
 }
 
-void muerte()
+void muerte() // reinicia el juego
 {
   longitud=1;
   posicion[0][0]=0;
   posicion[0][1]=0;
   alimento[0]=random(0,8);
   alimento[1]=random(0,8);
-}
-
-void recorrerMatriz() //Este metodo recorre todos los leds renglon por renglon y columna por columna. 
-{
-      for(byte k=0;k<8;k++)
-    {
-      byte l=255-(byte)(pow(2,k)+0.1);
-      for(byte i=0;i<8;i++)
-      {
-        byte j = (byte)(pow(2,i)+0.1);
-        digitalWrite(latchPin,LOW);
-        shiftOut(dataPin, clockPin, MSBFIRST, l);
-        shiftOut(dataPin, clockPin, MSBFIRST, j);
-        digitalWrite(latchPin, HIGH);
-        delay(100);
-      }
-    }
 }
